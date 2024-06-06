@@ -7,7 +7,7 @@ class TestCases:
         self.page = page
 
     def check_test_is_exists(self, test_name: str):
-        assert self.page.query_selector(f"css=tr >> text='{test_name}'") is not None
+        return self.page.query_selector(f"css=tr >> text='{test_name}'") is not None
 
     def delete_test_by_name(self, test_name: str):
         row = self.page.query_selector(f"*css=tr >> text='{test_name}'")

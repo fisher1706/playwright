@@ -1,0 +1,8 @@
+
+http://127.0.0.1:8000
+
+START GET TOKEN
+
+match: <re.Match object; span=(1070, 1191), match='<input type="hidden" name="csrfmiddlewaretoken" v>
+
+resp_login: 200

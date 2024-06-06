@@ -1,0 +1,2 @@
+INFO     root:conftest.py:18 preconditions start
+INFO     root:conftest.py:20 preconditions finished

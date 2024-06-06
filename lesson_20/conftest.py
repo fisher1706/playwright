@@ -1,11 +1,19 @@
 import json
+import logging
 import os
 import pytest
 
 from playwright.sync_api import sync_playwright
 from pytest import fixture
-from lesson_19.page_object.application import App
+from lesson_20.page_object.application import App
 from settings import BROWSER_OPTIONS
+
+
+@fixture(autouse=True, scope='session')
+def preconditions():
+    logging.info("preconditions start")
+    yield
+    logging.info("preconditions finished")
 
 
 @fixture(scope='session')

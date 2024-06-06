@@ -4,7 +4,7 @@ import pytest
 
 from playwright.sync_api import sync_playwright
 from pytest import fixture
-from lesson_18.page_object.application import App
+from lesson_19.page_object.application import App
 from settings import BROWSER_OPTIONS
 
 

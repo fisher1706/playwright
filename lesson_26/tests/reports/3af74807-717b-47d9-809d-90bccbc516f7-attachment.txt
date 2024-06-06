@@ -1,0 +1,3 @@
+INFO     root:conftest.py:18 preconditions start
+ERROR    root:application.py:21 page: http://127.0.0.1:8000/login/?next=/, console error: Failed to load resource: the server responded with a status of 404 (Not Found)
+INFO     root:conftest.py:20 preconditions finished

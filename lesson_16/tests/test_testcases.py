@@ -1,4 +1,3 @@
-from playwright.sync_api import Playwright, sync_playwright
 import pytest
 
 
@@ -8,7 +7,7 @@ data = [
 
 
 @pytest.mark.parametrize("test_name, description", data, ids=["first data"])
-def test_new_testcase_with_page_object_two(desktop_app_auth, test_name, description):
+def test_new_testcase_with_page_object(desktop_app_auth, test_name, description):
     desktop_app_auth.navigate_to("Create new test")
     desktop_app_auth.create_test(test_name, description)
     desktop_app_auth.navigate_to("Test Cases")

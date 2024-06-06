@@ -1,5 +1,4 @@
 from playwright.sync_api import Playwright, sync_playwright
-import pytest
 
 
 def run(playwright: Playwright) -> None:

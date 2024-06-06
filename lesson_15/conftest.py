@@ -1,7 +1,10 @@
+import json
+import os
+
 from playwright.sync_api import sync_playwright
 from pytest import fixture
-from lesson.page_object.application import AppOne, AppTwo
-import settings
+from lesson_15.page_object.application import App
+from settings import BROWSER_OPTIONS
 
 
 @fixture(autouse=True, scope='function')
@@ -17,68 +20,61 @@ def get_playwright():
         yield playwright
 
 
-@fixture(scope="session")
-def get_browser(get_playwright, request):
-    browser = request.config.getoption("--browser")
-    headless = request.config.geyini("headless")
-
-    if headless == "True":
-        headless = True
-    else:
-        headless = False
-
-    if browser == "chromium":
-        bro = get_playwright.chromium.launch(headless=headless)
-    elif browser == "firefox":
-        bro = get_playwright.firefox.launch(headless=headless)
-    elif browser == "webkit":
-        bro = get_playwright.webkit.launch(headless=headless)
-    else:
-        assert False, "unsupported browser type"
-
-    yield bro
-    bro.close()
-
-
 @fixture(scope='session')
-def desktop_app_one(get_playwright):
-    app = AppOne(get_playwright)
-    yield app
-    app.close()
-
-
-@fixture(scope='session')
-def desktop_app_two(get_playwright, request):
+def desktop_app(get_playwright, request):
     base_url = request.config.getini("base_url")
-    app = AppTwo(get_playwright, base_url=base_url)
+    app = App(
+        get_playwright,
+        base_url=base_url,
+        **BROWSER_OPTIONS
+    )
+    app.goto("/")
     yield app
     app.close()
 
 
 @fixture(scope='class')
-def desktop_app_auth(desktop_app_two):
-    app = desktop_app_two
+def desktop_app_auth(desktop_app, request):
+    secure = request.config.getoption("--secure")
+    config = load_config(secure)
+    app = desktop_app
     app.goto('/login')
-    app.login(**settings.USER)
+    app.login(**config)
     yield app
+
+
+def pytest_addoption(parser):
+    parser.addoption("--secure", action="store", default="secure.json")
+    parser.addoption("--device", action="store", default="")
+    parser.addini("base_url", help="base url of site under test", default="http://localhost:8000")
+
+
+def load_config(file):
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), file)
+    with open(config_file) as cfg:
+        return json.loads(cfg.read())
 
 
 @fixture(scope='session')
 def mobile_app(get_playwright, request):
     base_url = request.config.getini("base_url")
-    app = AppTwo(get_playwright, base_url=base_url)
+    device = request.config.getoption("--device")
+    app = App(
+        get_playwright,
+        base_url=base_url,
+        device=device,
+        **BROWSER_OPTIONS
+    )
+    app.goto('/')
     yield app
     app.close()
 
 
 @fixture(scope='class')
-def mobile_app_auth(mobile_app):
+def mobile_app_auth(mobile_app, request):
+    secure = request.config.getoption("--secure")
+    config = load_config(secure)
     app = mobile_app
     app.goto('/login')
-    app.login(**settings.USER)
+    app.login(**config)
     yield app
-
-
-def pytest_addoption(parser):
-    parser.addini("base_url", help="baseurl of site under test", default="http://localhost:8000")
-    # parser.addoption("--device", action="store", default="")

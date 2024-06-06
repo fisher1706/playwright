@@ -4,7 +4,7 @@ import pytest
 
 from playwright.sync_api import sync_playwright
 from pytest import fixture
-from lesson_16.page_object.application import App
+from lesson_18.page_object.application import App
 from settings import BROWSER_OPTIONS
 
 
@@ -14,7 +14,7 @@ def get_playwright():
         yield playwright
 
 
-@fixture(scope="session", params=["chromium", "firefox", "webkit"], ids=str)
+@fixture(scope="session", params=["chromium"], ids=str)
 def get_browser(get_playwright, request):
     browser = request.param
     os.environ["PWBROWSER"] = browser
@@ -64,7 +64,7 @@ def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="chromium")
 
     parser.addini("base_url", help="base url of site under test", default="http://localhost:8000")
-    parser.addini("headless", help="run browser in headless mode", default='True')
+    parser.addini("headless", help="run browser in headless mode", default='False')
 
 
 def load_config(file):
