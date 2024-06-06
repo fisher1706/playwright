@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="1.257" timestamp="2024-06-06T10:43:32.558773" hostname="acernb001"><testcase classname="lesson_25.tests.test_testcases" name="test_delete_test_case[chromium]" time="1.240" /></testsuite></testsuites>
